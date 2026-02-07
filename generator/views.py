@@ -12,7 +12,7 @@ def admin_home(request):
     return render(request, 'generator/admin/admin_home.html')
 
 def hod_home(request):
-    return render(request, 'generator/hod_home.html')
+    return render(request, 'generator/hod/hod_home.html')
 
 def manage_users(request):
     return render(request, "generator/admin/manage_users.html")
