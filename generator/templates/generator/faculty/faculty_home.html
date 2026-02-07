@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Faculty Dashboard</title>
+  <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-left">Timetable Generator</div>
+  <div class="nav-right">
+    <span>Faculty</span>
+    <a href="{% url 'login' %}"><button>Logout</button></a>
+  </div>
+</nav>
+
+<section class="stats-bar">
+  <div class="stat-box"><h3>16</h3><p>Hours / Week</p></div>
+  <div class="stat-box"><h3>2</h3><p>Extra Lectures</p></div>
+  <div class="stat-box"><h3>On-track</h3><p>Status</p></div>
+</section>
+
+<div class="container">
+<h3 class="section-title">Your Teaching</h3>
+
+<div class="activity">
+  <h4>Today’s Classes</h4>
+  <ul>
+    <li>8:30–10:30 DAA Lab</li>
+    <li>10:45–11:45 DAA Theory</li>
+    <li>11:45–12:45 Software Project</li>
+  </ul>
+</div>
+
+<br><br>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Now / Next Lecture</h4>
+    <p>DBMS – Lab 2 – 11:00 AM</p>
+    <button>View</button>
+  </div>
+
+  <div class="card">
+    <h4>Weekly Timetable</h4>
+    <p>View your weekly schedule.</p>
+    <a href="{% url 'faculty_timetable' %}"><button>Open</button></a>
+  </div>
+
+  <div class="card">
+    <h4>Extra Lectures</h4>
+    <p>Check or request extra lectures.</p>
+    <button>Request</button>
+  </div>
+
+  <div class="card">
+    <h4>Workload</h4>
+    <p>Total assigned teaching load.</p>
+    <button>Details</button>
+  </div>
+</div>
+</div>
+</body>
+</html>

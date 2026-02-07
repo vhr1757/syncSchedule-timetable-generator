@@ -1,0 +1,83 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f6f9;
+  padding: 20px;
+}
+
+/* NAVBAR */
+.navbar {
+  background: #4e73df;
+  color: white;
+  padding: 14px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.nav-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-right button {
+  background: white;
+  color: #4e73df;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+th {
+  background: #4e73df;
+  color: white;
+}
+
+.break {
+  background: #ffeeba;
+  font-weight: bold;
+}
+
+.lab {
+  background: #d1ecf1;
+  font-weight: 600;
+}
+
+.lecture {
+  background: #e2f0cb;
+}
+
+.time-col {
+  background: #f1f1f1;
+  font-weight: bold;
+}

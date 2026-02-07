@@ -1,0 +1,144 @@
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f4f6f9;
+    color: #333;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #4e73df;
+    color: white;
+    padding: 14px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.nav-right {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-right button {
+    background: white;
+    color: #4e73df;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* STATS */
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 25px 30px;
+}
+
+.stat-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.stat-box h3 {
+    margin: 0;
+    color: #4e73df;
+    font-size: 28px;
+}
+
+.stat-box p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* MAIN CONTENT */
+.container {
+    padding: 10px 30px 30px;
+}
+
+.section-title {
+    margin: 20px 0 15px;
+}
+
+/* CARDS */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+}
+
+.card h4 {
+    margin: 0 0 8px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.card button {
+    margin-top: 12px;
+    padding: 8px 14px;
+    border: none;
+    background: #4e73df;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* ALERT / ACTIVITY */
+.alert-box {
+    background: #fff3cd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.activity {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.activity ul {
+    padding-left: 18px;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+.quick-actions button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #1cc88a;
+    color: white;
+    cursor: pointer;
+}

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Timetable Generator</title>
+  <link rel="stylesheet" href="{% static 'generator/login.css' %}" />
+</head>
+<body>
+  <div class="login-container">
+    <h2>Timetable Generator</h2>
+    <p class="subtitle">Login to continue</p>
+
+    <form onsubmit="redirectUser(event)">
+      <div class="input-group">
+        <label>Select Role</label>
+        <select id="role" required>
+          <option value="">-- Select Role --</option>
+          <option value="admin">Administrator</option>
+          <option value="hod">Head of Department</option>
+          <option value="faculty">Faculty</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>Email ID</label>
+        <input type="email" placeholder="example_id@ddu.ac.in" required />
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" placeholder="Enter password" required />
+      </div>
+
+      <input class="login-btn" type="submit" value="Login" />
+    </form>
+
+    <p class="footer-text">© 2026 Timetable Generator System</p>
+  </div>
+
+  <script>
+    function redirectUser(event) {
+      event.preventDefault();
+      const role = document.getElementById("role").value;
+
+      if (role === "admin") {
+        window.location.href = "{% url 'admin_home' %}";
+      } else if (role === "faculty") {
+        window.location.href = "{% url 'faculty_home' %}";
+      } else if (role === "hod") {
+        window.location.href = "{% url 'hod_home' %}";
+      }
+    }
+  </script>
+</body>
+</html>

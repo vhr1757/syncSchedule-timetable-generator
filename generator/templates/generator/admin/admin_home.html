@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-left">Timetable Generator</div>
+  <div class="nav-right">
+    <span>Admin</span>
+    <a href="{% url 'login' %}"><button>Logout</button></a>
+  </div>
+</nav>
+
+<section class="stats-bar">
+  <div class="stat-box"><h3>42</h3><p>Faculties</p></div>
+  <div class="stat-box"><h3>18</h3><p>Rooms & Labs</p></div>
+  <div class="stat-box"><h3>24</h3><p>Batches</p></div>
+  <div class="stat-box"><h3>120</h3><p>Total Lectures</p></div>
+</section>
+
+<div class="container">
+<h3 class="section-title">Administration</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Faculty & Subjects</h4>
+    <p>Add, edit and assign faculty to subjects.</p>
+    <a href="{% url 'manage_users' %}"><button>Manage</button></a>
+  </div>
+
+  <div class="card">
+    <h4>Rooms & Labs</h4>
+    <p>Configure classrooms, labs and capacities.</p>
+    <button>Configure</button>
+  </div>
+
+  <div class="card">
+    <h4>Scheduler</h4>
+    <p>Generate and validate timetables.</p>
+    <button>Generate</button>
+  </div>
+
+  <div class="card">
+    <h4>View Timetable</h4>
+    <p>View final timetable in weekly format.</p>
+    <a href="{% url 'select_view' %}"><button>View</button></a>
+  </div>
+</div>
+
+<div class="activity">
+  <h4>Recent Activity</h4>
+  <ul>
+    <li>Timetable generated for CSE Sem 4</li>
+    <li>New lab added: DBMS Lab</li>
+    <li>Faculty workload updated</li>
+  </ul>
+</div>
+</div>
+</body>
+</html>

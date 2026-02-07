@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Timetable</title>
+<link rel="stylesheet" href="{% static 'generator/dashboard.css' %}">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-left">Timetable Generator</div>
+  <div class="nav-center">Semester 4 • Batch A1</div>
+  <div class="nav-right">
+    <a href="{% url 'admin_home' %}"><button>Dashboard</button></a>
+    <a href="{% url 'login' %}"><button>Logout</button></a>
+  </div>
+</nav>
+
+<div class="container">
+<h2>Select Timetable View</h2>
+
+<form action="{% url 'class_timetable' %}">
+<label>Semester</label>
+<select required>
+<option>Semester 2</option>
+<option selected>Semester 4</option>
+<option>Semester 6</option>
+</select>
+
+<label>Batch / Section</label>
+<select required>
+<option>A1</option><option>A2</option><option>B1</option><option>B2</option>
+</select>
+
+<br><br>
+<button>View Timetable</button>
+</form>
+</div>
+</body>
+</html>
