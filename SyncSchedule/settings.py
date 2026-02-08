@@ -52,6 +52,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'SyncSchedule.urls'
 
+AUTH_USER_MODEL = 'generator.User'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
