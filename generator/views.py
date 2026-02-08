@@ -52,7 +52,12 @@ def logout_view(request):
 def admin_home(request):
     if request.user.role != "ADMIN":
         return redirect("login")
-    return render(request, "generator/admin/admin_home.html")
+
+    faculty_count = User.objects.filter(role="FACULTY").count()
+
+    return render(request, "generator/admin/admin_home.html", {
+        "faculty_count": faculty_count
+    })
 
 
 @login_required
