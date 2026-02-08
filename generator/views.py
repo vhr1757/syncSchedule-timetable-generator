@@ -7,9 +7,6 @@ from django.views.decorators.cache import never_cache
 
 User = get_user_model()
 
-# --------------------
-# LOGIN
-# --------------------
 @never_cache
 def login_view(request):
     if request.method == "POST":
@@ -21,7 +18,6 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            # Redirect based on role
             if user.role == "ADMIN":
                 return redirect("admin_home")
             elif user.role == "HOD":
@@ -36,23 +32,21 @@ def login_view(request):
     return render(request, "generator/login.html")
 
 
-# --------------------
-# LOGOUT
-# --------------------
 def logout_view(request):
     logout(request)
     return redirect("login")
 
-
-# --------------------
-# DASHBOARDS
-# --------------------
 @login_required
 @never_cache
 def admin_home(request):
     if request.user.role != "ADMIN":
         return redirect("login")
-    return render(request, "generator/admin/admin_home.html")
+
+    faculty_count = User.objects.filter(role="FACULTY").count()
+
+    return render(request, "generator/admin/admin_home.html", {
+        "faculty_count": faculty_count
+    })
 
 
 @login_required
@@ -72,9 +66,6 @@ def faculty_home(request):
 
 
 
-# --------------------
-# ADMIN: MANAGE USERS
-# --------------------
 @login_required
 def manage_users(request):
     if request.user.role != "ADMIN":
@@ -124,9 +115,6 @@ def add_faculty(request):
     return render(request, "generator/admin/add_faculty.html")
 
 
-# --------------------
-# OTHER PAGES
-# --------------------
 @login_required
 def select_view(request):
     return render(request, "generator/select_view.html")
