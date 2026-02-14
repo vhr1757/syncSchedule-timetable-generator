@@ -15,6 +15,7 @@ urlpatterns = [
     path("admin_hm/manage-users/add-subject/", views.add_subject, name="add_subject"),
     path("admin_hm/manage-users/update-subject/<int:subject_id>/", views.update_subject, name="update_subject"),
     path("admin_hm/manage-users/delete-subject/<int:subject_id>/", views.delete_subject, name="delete_subject"),
+    path('admin_hm/add-room-lab/', views.add_room_lab, name='add_room_lab'),
     path("select-view/", views.select_view, name="select_view"),
     path("class-timetable/", views.class_timetable, name="class_timetable"),
     path("faculty-timetable/", views.faculty_timetable, name="faculty_timetable"),

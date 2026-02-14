@@ -46,9 +46,11 @@ def admin_home(request):
         return redirect("login")
 
     faculty_count = User.objects.filter(role="FACULTY").count()
+    room_count=RoomLab.objects.count()
 
     return render(request, "generator/admin/admin_home.html", {
-        "faculty_count": faculty_count
+        "faculty_count": faculty_count,
+        "room_count":room_count,
     })
 
 
@@ -230,3 +232,20 @@ def class_timetable(request):
 @login_required
 def faculty_timetable(request):
     return render(request, "generator/faculty/faculty_timetable.html")
+
+@login_required
+def add_room_lab(request):
+    if request.method == "POST":
+        roomNo = request.POST.get("roomNo")
+        room_type = request.POST.get("room_type")
+        capacity = request.POST.get("capacity")
+
+        if roomNo and room_type and capacity:
+            RoomLab.objects.create(
+                roomNo=roomNo,
+                room_type=room_type,
+                capacity=capacity
+            )
+            return redirect("add_room_lab")  # reload page after add
+
+    return render(request, "generator/admin/add_room_lab.html")

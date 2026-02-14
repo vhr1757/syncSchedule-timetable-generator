@@ -15,7 +15,7 @@ class GeneratorConfig(AppConfig):
             if not User.objects.filter(username='admin').exists():
                 User.objects.create_superuser(
                     username='admin',
-                    password='admin123',
+                    password='vedansh17052007',
                     email='admin@example.com',
                     role='ADMIN'
                 )

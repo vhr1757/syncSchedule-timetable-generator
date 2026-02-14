@@ -127,6 +127,11 @@
         margin-top: 10px;
         cursor: pointer;
       }
+      .actions {
+      display: flex;
+      gap: 8px; /* space between buttons */
+      }
+
     </style>
   </head>
 
@@ -162,21 +167,17 @@
             <td>{{ f.user.email }}</td>
             <td>{{ f.department }}</td>
             <td>{{ f.workload_hours }}</td>
-            <td>
-              <a href="{% url 'update_faculty' f.id %}">
-                <button class="update-btn">Update</button>
-              </a>
+            <td class="actions">
+                <a href="{% url 'update_faculty' f.id %}">
+                  <button class="update-btn">Update</button>
+                </a>
 
-              <form
-                method="post"
-                action="{% url 'delete_faculty' f.id %}"
-                style="display: inline"
-                onsubmit="return confirm('Delete this faculty?');"
-              >
-                {% csrf_token %}
-                <button class="delete-btn">Remove</button>
-              </form>
-            </td>
+                <form method="post" action="{% url 'delete_faculty' f.id %}" onsubmit="return confirm('Delete this faculty?');">
+                  {% csrf_token %}
+                  <button class="delete-btn">Remove</button>
+                </form>
+              </td>
+
           </tr>
           {% endfor %}
         </table>

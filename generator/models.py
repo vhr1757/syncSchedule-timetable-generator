@@ -24,18 +24,21 @@ class Subject(models.Model):
         return self.subject_name
 
 
-class Room(models.Model):
-    ROOM_TYPE = (
-        ('CLASS', 'Classroom'),
-        ('LAB', 'Lab'),
+
+class RoomLab(models.Model):
+    TYPE_CHOICES = (
+        ('Room', 'Room'),
+        ('Lab', 'Lab'),
     )
-    room_number = models.CharField(max_length=20)
-    room_type = models.CharField(max_length=10, choices=ROOM_TYPE)
+
+    roomNo = models.IntegerField()
+    room_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     capacity = models.IntegerField()
-    is_available = models.BooleanField(default=True)
+    # location = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.room_number
+        return f"{self.roomNo} ({self.room_type})"
+
 
 
 class FacultyProfile(models.Model):
@@ -70,7 +73,7 @@ class TimetableEntry(models.Model):
     timetable = models.ForeignKey(Timetable, on_delete=models.CASCADE, related_name="entries")
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     faculty = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room_type = models.ForeignKey(RoomLab, on_delete=models.CASCADE)
     day = models.CharField(max_length=10)
     time_slot = models.CharField(max_length=20)
 

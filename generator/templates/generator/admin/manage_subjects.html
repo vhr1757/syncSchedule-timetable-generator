@@ -103,6 +103,19 @@
         margin-top: 10px;
         cursor: pointer;
       }
+      table th, table td {
+      text-align: center; /* or left/right depending on preference */
+      vertical-align: middle; /* keeps text/buttons vertically centered */
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center; /* centers the button group horizontally */
+      }
+
+
+
     </style>
   </head>
 
@@ -142,17 +155,12 @@
             <td>{{ s.semester }}</td>
             <td>{{ s.lecture_hours }}</td>
             <td>{{ s.lab_hours }}</td>
-            <td>
+            <td class="actions">
               <a href="{% url 'update_subject' s.id %}">
                 <button class="update-btn">Update</button>
               </a>
 
-              <form
-                method="post"
-                action="{% url 'delete_subject' s.id %}"
-                style="display: inline"
-                onsubmit="return confirm('Delete this subject?');"
-              >
+              <form method="post" action="{% url 'delete_subject' s.id %}" onsubmit="return confirm('Delete this subject?');">
                 {% csrf_token %}
                 <button class="delete-btn">Remove</button>
               </form>
