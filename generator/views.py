@@ -53,24 +53,6 @@ def admin_home(request):
         "room_count":room_count,
     })
 
-
-@login_required
-@never_cache
-def hod_home(request):
-    if request.user.role != "HOD":
-        return redirect("login")
-    return render(request, "generator/hod/hod_home.html")
-
-
-@login_required
-@never_cache
-def faculty_home(request):
-    if request.user.role != "FACULTY":
-        return redirect("login")
-    return render(request, "generator/faculty/faculty_home.html")
-
-
-
 @login_required
 def manage_users(request):
     if request.user.role != "ADMIN":
@@ -249,3 +231,39 @@ def add_room_lab(request):
             return redirect("add_room_lab")  # reload page after add
 
     return render(request, "generator/admin/add_room_lab.html")
+
+@login_required
+@never_cache
+def hod_home(request):
+    if request.user.role != "HOD":
+        return redirect("login")
+    return render(request, "generator/hod/hod_home.html")
+
+
+@login_required
+@never_cache
+def faculty_home(request):
+    if request.user.role != "FACULTY":
+        return redirect("login")
+    
+    faculty_name = User.objects.get(id=request.user.id).username
+    work_hours = FacultyProfile.objects.get(user_id=request.user.id).workload_hours
+
+    return render(request, "generator/faculty/faculty_home.html", {"faculty_name": faculty_name, "work_hours": work_hours})
+
+@login_required
+def faculty_timetable_selector(request):
+    if request.method == "POST":
+        semester = request.POST.get("semester")
+        division = request.POST.get("division")
+
+        return redirect("faculty_timetable_view", semester=semester, division=division)
+
+    return render(request, "generator/faculty/select_timetable.html")
+
+@login_required
+def faculty_timetable_view(request, semester, division):
+    return render(request, "generator/class_timetable.html", {
+        "semester": semester,
+        "division": division
+    })

@@ -1,64 +1,128 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Faculty Dashboard</title>
-  <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}">
-</head>
-<body>
-<nav class="navbar">
-  <div class="nav-left">Timetable Generator</div>
-  <div class="nav-right">
-    <span>Faculty</span>
-    <a href="{% url 'login' %}"><button>Logout</button></a>
-  </div>
-</nav>
+  <head>
+    <style>
+      .btn-primary {
+        margin-top: 12px;
+        padding: 8px 14px;
+        border: none;
+        background: #4e73df;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+      }
 
-<section class="stats-bar">
-  <div class="stat-box"><h3>16</h3><p>Hours / Week</p></div>
-  <div class="stat-box"><h3>2</h3><p>Extra Lectures</p></div>
-  <div class="stat-box"><h3>On-track</h3><p>Status</p></div>
-</section>
+      .stat-box h4 {
+        margin: 0 0 8px;
+      }
+    </style>
+    <title>Faculty Dashboard</title>
+    <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}" />
+    <link rel="stylesheet" href="{% static 'generator/timetable.css' %}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">Timetable Generator</div>
+      <div class="nav-right">
+        <span>{{ faculty_name }}</span>
+        <a href="{% url 'login' %}"><button>Logout</button></a>
+      </div>
+    </nav>
 
-<div class="container">
-<h3 class="section-title">Your Teaching</h3>
+    <section class="stats-bar">
+      <div class="stat-box">
+        <h3>{{ work_hours }}</h3>
+        <p>Hours / Week</p>
+      </div>
+      <div class="stat-box">
+        <h3>2</h3>
+        <p>Extra Lectures</p>
+      </div>
+      <div class="stat-box">
+        <h4>Semester Timetable</h4>
+        <a href="{% url 'faculty_timetable_selector' %}">
+          <button class="btn-primary">View</button>
+        </a>
+      </div>
+    </section>
 
-<div class="activity">
-  <h4>Today’s Classes</h4>
-  <ul>
-    <li>8:30–10:30 DAA Lab</li>
-    <li>10:45–11:45 DAA Theory</li>
-    <li>11:45–12:45 Software Project</li>
-  </ul>
-</div>
+    <div class="container">
+      <h3 class="section-title">Your Teaching</h3>
 
-<br><br>
+      <div class="activity">
+        <h4>Today’s Classes</h4>
+        <ul>
+          <li>8:30–10:30 DAA Lab</li>
+          <li>10:45–11:45 DAA Theory</li>
+          <li>11:45–12:45 Software Project</li>
+        </ul>
+        <button class="btn-primary">Request Extra Class</button>
+      </div>
 
-<div class="card-grid">
-  <div class="card">
-    <h4>Now / Next Lecture</h4>
-    <p>DBMS – Lab 2 – 11:00 AM</p>
-    <button>View</button>
-  </div>
+      <br /><br />
 
-  <div class="card">
-    <h4>Weekly Timetable</h4>
-    <p>View your weekly schedule.</p>
-    <a href="{% url 'faculty_timetable' %}"><button>Open</button></a>
-  </div>
+      <div class="card-grid">
+        <table>
+          <tr>
+            <th>Time</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+          </tr>
 
-  <div class="card">
-    <h4>Extra Lectures</h4>
-    <p>Check or request extra lectures.</p>
-    <button>Request</button>
-  </div>
+          <tr>
+            <td>8:30–9:30</td>
+            <td>DDC (Sem4‑A1)</td>
+            <td>-</td>
+            <td>-</td>
+            <td>DDC (Sem4‑A2)</td>
+            <td>-</td>
+          </tr>
 
-  <div class="card">
-    <h4>Workload</h4>
-    <p>Total assigned teaching load.</p>
-    <button>Details</button>
-  </div>
-</div>
-</div>
-</body>
+          <tr>
+            <td>9:30–10:30</td>
+            <td>-</td>
+            <td>-</td>
+            <td>DDC (Sem6‑B1)</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td>10:30–12:30</td>
+            <td class="lab">DDC Lab (Sem4‑A1)</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td class="lab">DDC Lab (Sem6‑B2)</td>
+          </tr>
+
+          <tr>
+            <td colspan="6" class="break">BREAK</td>
+          </tr>
+
+          <tr>
+            <td>1:30–2:30</td>
+            <td>-</td>
+            <td>-</td>
+            <td>DDC (Sem4‑B1)</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+
+          <tr>
+            <td>2:30–3:30</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>DDC (Sem6‑A1)</td>
+            <td>-</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
 </html>

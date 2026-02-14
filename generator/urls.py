@@ -19,4 +19,6 @@ urlpatterns = [
     path("select-view/", views.select_view, name="select_view"),
     path("class-timetable/", views.class_timetable, name="class_timetable"),
     path("faculty-timetable/", views.faculty_timetable, name="faculty_timetable"),
+    path("faculty/select-timetable/", views.faculty_timetable_selector, name="faculty_timetable_selector"),
+    path("faculty/timetable/<int:semester>/<str:division>/", views.faculty_timetable_view, name="faculty_timetable_view"),
 ]
