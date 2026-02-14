@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Manage Subjects</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial;
+        background: #f4f6f8;
+      }
+
+      .navbar {
+        background: #4e73df;
+        color: white;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-left {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-right button {
+        background: white;
+        color: #4e73df;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .main-container {
+        padding: 30px;
+      }
+
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background: #4e73df;
+        color: white;
+      }
+
+      .add-btn {
+        background: #4e73df;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 15px;
+      }
+
+      .update-btn {
+        background: #4e73df;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .delete-btn {
+        background: #e74a3b;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .btn-secondary {
+        background: gray;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">Admin Panel</div>
+      <div class="nav-right">
+        <a href="{% url 'admin_home' %}"><button>Dashboard</button></a>
+        <a href="{% url 'login' %}"><button>Logout</button></a>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <div class="card">
+        <h2>Manage Subjects</h2>
+
+        <a href="{% url 'add_subject' %}">
+          <button class="add-btn">+ Add Subject</button>
+        </a>
+
+        <br /><br />
+
+        <table>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Semester</th>
+            <th>Lec</th>
+            <th>Lab</th>
+            <th>Actions</th>
+          </tr>
+
+          {% for s in subjects %}
+          <tr>
+            <td>{{ s.subject_code }}</td>
+            <td>{{ s.subject_name }}</td>
+            <td>{{ s.semester }}</td>
+            <td>{{ s.lecture_hours }}</td>
+            <td>{{ s.lab_hours }}</td>
+            <td>
+              <a href="{% url 'update_subject' s.id %}">
+                <button class="update-btn">Update</button>
+              </a>
+
+              <form
+                method="post"
+                action="{% url 'delete_subject' s.id %}"
+                style="display: inline"
+                onsubmit="return confirm('Delete this subject?');"
+              >
+                {% csrf_token %}
+                <button class="delete-btn">Remove</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        <a href="{% url 'manage_users' %}">
+          <button class="btn-secondary">Back</button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

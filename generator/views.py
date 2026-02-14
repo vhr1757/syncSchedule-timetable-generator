@@ -1,15 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import never_cache
+from .models import *
 
 
 User = get_user_model()
 
-# --------------------
-# LOGIN
-# --------------------
 @never_cache
 def login_view(request):
     if request.method == "POST":
@@ -36,17 +34,11 @@ def login_view(request):
     return render(request, "generator/login.html")
 
 
-# --------------------
-# LOGOUT
-# --------------------
 def logout_view(request):
     logout(request)
     return redirect("login")
 
 
-# --------------------
-# DASHBOARDS
-# --------------------
 @login_required
 @never_cache
 def admin_home(request):
@@ -77,61 +69,154 @@ def faculty_home(request):
 
 
 
-# --------------------
-# ADMIN: MANAGE USERS
-# --------------------
 @login_required
 def manage_users(request):
     if request.user.role != "ADMIN":
         return redirect("login")
     return render(request, "generator/admin/manage_users.html")
 
+@login_required
+def manage_subjects(request):
+    subjects = Subject.objects.all()
+    return render(request, "generator/admin/manage_subjects.html", {"subjects": subjects})
+
 
 @login_required
-def add_student(request):
+def add_subject(request):
+    if request.method == "POST":
+        Subject.objects.create(
+            subject_code=request.POST["subject_code"],
+            subject_name=request.POST["subject_name"],
+            semester=request.POST["semester"],
+            lecture_hours=request.POST["lecture_hours"],
+            lab_hours=request.POST.get("lab_hours") or 0,
+        )
+        return redirect("manage_subjects")
+
+    return render(request, "generator/admin/add_subject.html")
+
+
+@login_required
+def update_subject(request, subject_id):
+    subject = get_object_or_404(Subject, id=subject_id)
+
+    if request.method == "POST":
+        subject.subject_code = request.POST["subject_code"]
+        subject.subject_name = request.POST["subject_name"]
+        subject.semester = request.POST["semester"]
+        subject.lecture_hours = request.POST["lecture_hours"]
+        subject.lab_hours = request.POST.get("lab_hours") or 0
+        subject.save()
+        return redirect("manage_subjects")
+
+    return render(request, "generator/admin/update_subject.html", {"subject": subject})
+
+
+@login_required
+def delete_subject(request, subject_id):
+    subject = get_object_or_404(Subject, id=subject_id)
+    subject.delete()
+    return redirect("manage_subjects")
+
+
+@login_required
+def manage_faculties(request):
     if request.user.role != "ADMIN":
         return redirect("login")
 
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        email = request.POST.get("email")
+    faculties = FacultyProfile.objects.select_related("user").all()
 
-        User.objects.create_user(
-            username=username,
-            password=password,
-            email=email,
-            role="STUDENT"
-        )
-        return redirect("manage_users")
-
-    return render(request, "generator/admin/add_student.html")
-
+    return render(request, "generator/admin/manage_faculties.html", {
+        "faculties": faculties
+    })
 
 @login_required
 def add_faculty(request):
     if request.user.role != "ADMIN":
         return redirect("login")
 
+    subjects = Subject.objects.all()
+
     if request.method == "POST":
         username = request.POST.get("username")
-        password = request.POST.get("password")
         email = request.POST.get("email")
+        password = request.POST.get("password")
+        department = request.POST.get("department")
+        workload = request.POST.get("workload_hours")
 
-        User.objects.create_user(
+        selected_subjects = request.POST.getlist("subjects")
+
+        if User.objects.filter(username=username).exists():
+            return render(request, "generator/admin/add_faculty.html", {
+                "error": "Username exists",
+                "subjects": subjects
+            })
+
+        user = User.objects.create_user(
             username=username,
-            password=password,
             email=email,
+            password=password,
             role="FACULTY"
         )
-        return redirect("manage_users")
 
-    return render(request, "generator/admin/add_faculty.html")
+        profile = FacultyProfile.objects.create(
+            user=user,
+            department=department,
+            workload_hours=workload
+        )
 
+        profile.subjects.set(selected_subjects)  # save relation
 
-# --------------------
-# OTHER PAGES
-# --------------------
+        return render(request, "generator/admin/add_faculty.html", {
+            "success": "Faculty added successfully",
+            "subjects": subjects
+        })
+
+    return render(request, "generator/admin/add_faculty.html", {
+        "subjects": subjects
+    })
+
+@login_required
+def update_faculty(request, faculty_id):
+    if request.user.role != "ADMIN":
+        return redirect("login")
+
+    faculty = get_object_or_404(FacultyProfile, id=faculty_id)
+    subjects = Subject.objects.all()
+
+    if request.method == "POST":
+        faculty.user.username = request.POST.get("username")
+        faculty.user.email = request.POST.get("email")
+        faculty.user.save()
+
+        faculty.department = request.POST.get("department")
+        faculty.workload_hours = request.POST.get("workload_hours")
+
+        selected_subjects = request.POST.getlist("subjects")
+        faculty.subjects.set(selected_subjects)
+
+        faculty.save()
+        return redirect("manage_faculties")
+
+    return render(request, "generator/admin/update_faculty.html", {
+        "faculty": faculty,
+        "subjects": subjects
+    })
+
+from django.shortcuts import get_object_or_404, redirect
+from generator.models import FacultyProfile
+
+@login_required
+def delete_faculty(request, faculty_id):
+    if request.user.role != "ADMIN":
+        return redirect("login")
+
+    faculty = get_object_or_404(FacultyProfile, id=faculty_id)
+
+    faculty.user.delete()
+
+    return redirect("manage_faculties")
+
 @login_required
 def select_view(request):
     return render(request, "generator/select_view.html")

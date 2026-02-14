@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+  <title>Update Faculty</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .navbar {
+      background: #4e73df;
+      color: white;
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-left {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-right button {
+      background: white;
+      color: #4e73df;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .main-container {
+      padding: 30px;
+    }
+
+    .page-title {
+      margin-bottom: 20px;
+    }
+
+    .form-card {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 500px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .btn-primary {
+      background: #4e73df;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: gray;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-left">Admin Panel</div>
+  <div class="nav-right">
+    <a href="{% url 'admin_home' %}"><button>Dashboard</button></a>
+    <a href="{% url 'login' %}"><button>Logout</button></a>
+  </div>
+</nav>
+
+<div class="main-container">
+  <h2 class="page-title">Update Faculty</h2>
+
+  <div class="form-card">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" value="{{ faculty.user.username }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" value="{{ faculty.user.email }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Department</label>
+        <input type="text" name="department" value="{{ faculty.department }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Subjects Taught</label>
+
+        <div style="max-height:150px; overflow-y:auto; border:1px solid #ccc; padding:8px;">
+          {% for sub in subjects %}
+          <div>
+            <input type="checkbox" name="subjects" value="{{ sub.id }}"
+              {% if sub in faculty.subjects.all %}checked{% endif %}>
+            {{ sub.subject_name }}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Workload Hours</label>
+        <input type="number" name="workload_hours" value="{{ faculty.workload_hours }}" required>
+      </div>
+
+      <button type="submit" class="btn-primary">Update Faculty</button>
+    </form>
+
+    <a href="{% url 'manage_faculties' %}">
+      <button class="btn-secondary">Back</button>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

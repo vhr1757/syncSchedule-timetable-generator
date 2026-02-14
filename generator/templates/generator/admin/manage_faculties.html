@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Manage Faculties</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        background: #4e73df;
+        color: white;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-left {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-right button {
+        background: white;
+        color: #4e73df;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      /* PAGE */
+      .main-container {
+        padding: 30px;
+      }
+
+      .page-title {
+        margin-bottom: 20px;
+      }
+
+      /* CARD */
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      }
+
+      /* ADD BUTTON */
+      .add-btn {
+        background: #4e73df;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 15px;
+      }
+
+      /* TABLE */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th {
+        background: #4e73df;
+        color: white;
+        padding: 10px;
+        text-align: left;
+      }
+
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      tr:hover {
+        background: #f1f3ff;
+      }
+
+      /* ACTION BUTTONS */
+      .update-btn {
+        background: #4e73df;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .delete-btn {
+        background: #e74a3b;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: #4e73df;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+
+      .btn-secondary {
+        background: gray;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">Admin Panel</div>
+      <div class="nav-right">
+        <a href="{% url 'admin_home' %}"><button>Dashboard</button></a>
+        <a href="{% url 'login' %}"><button>Logout</button></a>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <h2 class="page-title">Manage Faculties</h2>
+
+      <div class="card">
+        <a href="{% url 'add_faculty' %}">
+          <button class="add-btn">+ Add Faculty</button>
+        </a>
+
+        <table>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Workload</th>
+            <th>Actions</th>
+          </tr>
+
+          {% for f in faculties %}
+          <tr>
+            <td>{{ f.user.username }}</td>
+            <td>{{ f.user.email }}</td>
+            <td>{{ f.department }}</td>
+            <td>{{ f.workload_hours }}</td>
+            <td>
+              <a href="{% url 'update_faculty' f.id %}">
+                <button class="update-btn">Update</button>
+              </a>
+
+              <form
+                method="post"
+                action="{% url 'delete_faculty' f.id %}"
+                style="display: inline"
+                onsubmit="return confirm('Delete this faculty?');"
+              >
+                {% csrf_token %}
+                <button class="delete-btn">Remove</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        <a href="{% url 'manage_users' %}">
+          <button class="btn-secondary">Back</button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

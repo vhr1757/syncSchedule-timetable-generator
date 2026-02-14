@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+  <title>Update Subject</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .navbar {
+      background: #4e73df;
+      color: white;
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-right button {
+      background: white;
+      color: #4e73df;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .main-container {
+      padding: 30px;
+    }
+
+    .form-card {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 500px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .btn-primary {
+      background: #4e73df;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: gray;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div>Admin Panel</div>
+  <div class="nav-right">
+    <a href="{% url 'admin_home' %}"><button>Dashboard</button></a>
+    <a href="{% url 'login' %}"><button>Logout</button></a>
+  </div>
+</nav>
+
+<div class="main-container">
+  <h2>Update Subject</h2>
+
+  <div class="form-card">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Subject Code</label>
+        <input type="text" name="subject_code"
+               value="{{ subject.subject_code }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Subject Name</label>
+        <input type="text" name="subject_name"
+               value="{{ subject.subject_name }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Semester</label>
+        <input type="number" name="semester"
+               value="{{ subject.semester }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Lecture Hours</label>
+        <input type="number" name="lecture_hours"
+               value="{{ subject.lecture_hours }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Lab Hours</label>
+        <input type="number" name="lab_hours"
+               value="{{ subject.lab_hours }}">
+      </div>
+
+      <button type="submit" class="btn-primary">Update Subject</button>
+    </form>
+
+    <a href="{% url 'manage_subjects' %}">
+      <button class="btn-secondary">Back</button>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
