@@ -29,12 +29,13 @@ class RoomLab(models.Model):
     TYPE_CHOICES = (
         ('Room', 'Room'),
         ('Lab', 'Lab'),
+        ('Seminar Hall', 'Seminar Hall'),
     )
 
-    roomNo = models.IntegerField()
-    room_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    roomNo = models.CharField(max_length=20)
+    room_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     capacity = models.IntegerField()
-    # location = models.CharField(max_length=100)
+    isAvailable = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.roomNo} ({self.room_type})"

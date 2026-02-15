@@ -228,7 +228,7 @@ def add_room_lab(request):
                 room_type=room_type,
                 capacity=capacity
             )
-            return redirect("add_room_lab")  # reload page after add
+            return redirect("add_room_lab")
 
     return render(request, "generator/admin/add_room_lab.html")
 
