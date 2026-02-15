@@ -42,9 +42,8 @@ urlpatterns = [
         name="delete_subject",
     ),
     path("admin_hm/add-room-lab/", views.add_room_lab, name="add_room_lab"),
-    path("select-view/", views.select_view, name="select_view"),
-    path("class-timetable/", views.class_timetable, name="class_timetable"),
-    path("faculty-timetable/", views.faculty_timetable, name="faculty_timetable"),
+    path("admin_hm/generate/", views.set_constraints, name="set_constraints"),
+    path("admin_hm/run-generator/", views.run_generator, name="run_generator"),
     path(
         "faculty/select-timetable/",
         views.faculty_timetable_selector,

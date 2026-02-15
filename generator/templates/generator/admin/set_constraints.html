@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Set Constraints</title>
+    <style>
+      body {
+        background: #f4f6f8;
+        font-family: Arial;
+        margin: 0;
+      }
+      .navbar {
+        background: #4e73df;
+        color: white;
+        padding: 15px 30px;
+      }
+      .container {
+        padding: 30px;
+      }
+
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        max-width: 500px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .checkbox-row {
+        display: flex;
+        align-items: center; /* 🔥 This fixes vertical alignment */
+        gap: 8px; /* Space between checkbox and text */
+        margin-bottom: 6px;
+      }
+
+      .checkbox-row input[type="checkbox"] {
+        width: auto; /* Prevents stretching */
+        margin: 0; /* Removes weird default margins */
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+      }
+      button {
+        background: #4e73df;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar">Set Timetable Constraints</div>
+
+    <div class="container">
+      <div class="card">
+        <form method="post">
+          {% csrf_token %}
+
+          <label>Max Lectures per Day</label>
+          <input
+            type="number"
+            name="max_lectures"
+            value="{{ constraint.max_lectures_per_day|default:6 }}"
+          />
+
+          <label>Max Labs per Day</label>
+          <input
+            type="number"
+            name="max_labs"
+            value="{{ constraint.max_labs_per_day|default:2 }}"
+          />
+
+          <label>
+            <div class="checkbox-row">
+            <input
+              type="checkbox"
+              name="allow_saturday"
+              {%
+              if
+              constraint.allow_saturday
+              %}checked{%
+              endif
+              %}
+            />
+            Allow Saturday
+            </div>
+          </label>
+
+          <br /><br />
+
+          <button type="submit">Save & Generate</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -201,10 +202,6 @@ def update_faculty(request, faculty_id):
     )
 
 
-from django.shortcuts import get_object_or_404, redirect
-from generator.models import FacultyProfile
-
-
 @login_required
 def delete_faculty(request, faculty_id):
     if request.user.role != "ADMIN":
@@ -215,22 +212,6 @@ def delete_faculty(request, faculty_id):
     faculty.user.delete()
 
     return redirect("manage_faculties")
-
-
-@login_required
-def select_view(request):
-    return render(request, "generator/select_view.html")
-
-
-@login_required
-def class_timetable(request):
-    return render(request, "generator/class_timetable.html")
-
-
-@login_required
-def faculty_timetable(request):
-    return render(request, "generator/faculty/faculty_timetable.html")
-
 
 @login_required
 def add_room_lab(request):
@@ -247,6 +228,37 @@ def add_room_lab(request):
 
     return render(request, "generator/admin/add_room_lab.html")
 
+@login_required
+def set_constraints(request):
+    context = {}
+
+    constraint = Constraint.objects.first()
+
+    if request.method == "POST":
+        max_lectures = request.POST.get("max_lectures")
+        max_labs = request.POST.get("max_labs")
+        allow_sat = request.POST.get("allow_saturday") == "on"
+
+        if constraint:
+            constraint.max_lectures_per_day = max_lectures
+            constraint.max_labs_per_day = max_labs
+            constraint.allow_saturday = allow_sat
+            constraint.save()
+        else:
+            Constraint.objects.create(
+                max_lectures_per_day=max_lectures,
+                max_labs_per_day=max_labs,
+                allow_saturday=allow_sat
+            )
+
+        return redirect("run_generator")
+
+    context["constraint"] = constraint
+    return render(request, "generator/admin/set_constraints.html", context)
+
+@login_required
+def run_generator(request):
+    return HttpResponse("Algorithm coming next ")
 
 @login_required
 @never_cache
