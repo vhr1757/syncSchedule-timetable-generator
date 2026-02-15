@@ -100,17 +100,16 @@
         margin-top: 10px;
       }
       .checkbox-row {
-  display: flex;
-  align-items: center;   /* 🔥 This fixes vertical alignment */
-  gap: 8px;              /* Space between checkbox and text */
-  margin-bottom: 6px;
-}
+        display: flex;
+        align-items: center; /* 🔥 This fixes vertical alignment */
+        gap: 8px; /* Space between checkbox and text */
+        margin-bottom: 6px;
+      }
 
-.checkbox-row input[type="checkbox"] {
-  width: auto;           /* Prevents stretching */
-  margin: 0;             /* Removes weird default margins */
-}
-
+      .checkbox-row input[type="checkbox"] {
+        width: auto; /* Prevents stretching */
+        margin: 0; /* Removes weird default margins */
+      }
     </style>
   </head>
 
@@ -167,16 +166,26 @@
               "
             >
               {% for sub in subjects %}
-<div class="checkbox-row">
-  <input type="checkbox" name="subjects" value="{{ sub.id }}"
-    {% if sub in faculty.subjects.all %}checked{% endif %}>
-  <span>{{ sub.subject_name }}</span>
-</div>
-{% endfor %}
-
+              <div class="checkbox-row">
+                <input
+                  type="checkbox"
+                  name="subjects"
+                  value="{{ sub.id }}"
+                  {%
+                  if
+                  sub
+                  in
+                  faculty.subjects.all
+                  %}checked{%
+                  endif
+                  %}
+                />
+                <span>{{ sub.subject_name }}</span>
+              </div>
+              {% endfor %}
             </div>
           </div>
-          
+
           {% if not subjects %}
           <p style="color: red">Please add subjects first.</p>
           {% endif %}

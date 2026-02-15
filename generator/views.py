@@ -4,9 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import never_cache
 from .models import *
+from django.db.models import Count
+from .models import TimetableEntry, Constraint
 
 
 User = get_user_model()
+
 
 @never_cache
 def login_view(request):
@@ -29,7 +32,11 @@ def login_view(request):
             elif user.role == "STUDENT":
                 return redirect("student_home")
         else:
-            return render(request, "generator/login.html", {"error": "Invalid username or password"})
+            return render(
+                request,
+                "generator/login.html",
+                {"error": "Invalid username or password"},
+            )
 
     return render(request, "generator/login.html")
 
@@ -46,12 +53,17 @@ def admin_home(request):
         return redirect("login")
 
     faculty_count = User.objects.filter(role="FACULTY").count()
-    room_count=RoomLab.objects.count()
+    room_count = RoomLab.objects.count()
 
-    return render(request, "generator/admin/admin_home.html", {
-        "faculty_count": faculty_count,
-        "room_count":room_count,
-    })
+    return render(
+        request,
+        "generator/admin/admin_home.html",
+        {
+            "faculty_count": faculty_count,
+            "room_count": room_count,
+        },
+    )
+
 
 @login_required
 def manage_users(request):
@@ -59,10 +71,13 @@ def manage_users(request):
         return redirect("login")
     return render(request, "generator/admin/manage_users.html")
 
+
 @login_required
 def manage_subjects(request):
     subjects = Subject.objects.all()
-    return render(request, "generator/admin/manage_subjects.html", {"subjects": subjects})
+    return render(
+        request, "generator/admin/manage_subjects.html", {"subjects": subjects}
+    )
 
 
 @login_required
@@ -110,9 +125,10 @@ def manage_faculties(request):
 
     faculties = FacultyProfile.objects.select_related("user").all()
 
-    return render(request, "generator/admin/manage_faculties.html", {
-        "faculties": faculties
-    })
+    return render(
+        request, "generator/admin/manage_faculties.html", {"faculties": faculties}
+    )
+
 
 @login_required
 def add_faculty(request):
@@ -131,34 +147,30 @@ def add_faculty(request):
         selected_subjects = request.POST.getlist("subjects")
 
         if User.objects.filter(username=username).exists():
-            return render(request, "generator/admin/add_faculty.html", {
-                "error": "Username exists",
-                "subjects": subjects
-            })
+            return render(
+                request,
+                "generator/admin/add_faculty.html",
+                {"error": "Username exists", "subjects": subjects},
+            )
 
         user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            role="FACULTY"
+            username=username, email=email, password=password, role="FACULTY"
         )
 
         profile = FacultyProfile.objects.create(
-            user=user,
-            department=department,
-            workload_hours=workload
+            user=user, department=department, workload_hours=workload
         )
 
         profile.subjects.set(selected_subjects)  # save relation
 
-        return render(request, "generator/admin/add_faculty.html", {
-            "success": "Faculty added successfully",
-            "subjects": subjects
-        })
+        return render(
+            request,
+            "generator/admin/add_faculty.html",
+            {"success": "Faculty added successfully", "subjects": subjects},
+        )
 
-    return render(request, "generator/admin/add_faculty.html", {
-        "subjects": subjects
-    })
+    return render(request, "generator/admin/add_faculty.html", {"subjects": subjects})
+
 
 @login_required
 def update_faculty(request, faculty_id):
@@ -182,13 +194,16 @@ def update_faculty(request, faculty_id):
         faculty.save()
         return redirect("manage_faculties")
 
-    return render(request, "generator/admin/update_faculty.html", {
-        "faculty": faculty,
-        "subjects": subjects
-    })
+    return render(
+        request,
+        "generator/admin/update_faculty.html",
+        {"faculty": faculty, "subjects": subjects},
+    )
+
 
 from django.shortcuts import get_object_or_404, redirect
 from generator.models import FacultyProfile
+
 
 @login_required
 def delete_faculty(request, faculty_id):
@@ -200,6 +215,7 @@ def delete_faculty(request, faculty_id):
     faculty.user.delete()
 
     return redirect("manage_faculties")
+
 
 @login_required
 def select_view(request):
@@ -215,6 +231,7 @@ def class_timetable(request):
 def faculty_timetable(request):
     return render(request, "generator/faculty/faculty_timetable.html")
 
+
 @login_required
 def add_room_lab(request):
     if request.method == "POST":
@@ -224,20 +241,28 @@ def add_room_lab(request):
 
         if roomNo and room_type and capacity:
             RoomLab.objects.create(
-                roomNo=roomNo,
-                room_type=room_type,
-                capacity=capacity
+                roomNo=roomNo, room_type=room_type, capacity=capacity
             )
             return redirect("add_room_lab")
 
     return render(request, "generator/admin/add_room_lab.html")
 
+
 @login_required
 @never_cache
 def hod_home(request):
-    if request.user.role != "HOD":
+    if not request.user.is_authenticated or request.user.role != "HOD":
         return redirect("login")
-    return render(request, "generator/hod/hod_home.html")
+
+    overloaded_count = get_overloaded_faculties_count()
+    faculty_count = User.objects.filter(role="FACULTY").count()
+
+    context = {
+        "overloaded_count": overloaded_count,
+        "faculty_count": faculty_count,
+    }
+
+    return render(request, "generator/hod/hod_home.html", context)
 
 
 @login_required
@@ -245,11 +270,16 @@ def hod_home(request):
 def faculty_home(request):
     if request.user.role != "FACULTY":
         return redirect("login")
-    
+
     faculty_name = User.objects.get(id=request.user.id).username
     work_hours = FacultyProfile.objects.get(user_id=request.user.id).workload_hours
 
-    return render(request, "generator/faculty/faculty_home.html", {"faculty_name": faculty_name, "work_hours": work_hours})
+    return render(
+        request,
+        "generator/faculty/faculty_home.html",
+        {"faculty_name": faculty_name, "work_hours": work_hours},
+    )
+
 
 @login_required
 def faculty_timetable_selector(request):
@@ -261,9 +291,55 @@ def faculty_timetable_selector(request):
 
     return render(request, "generator/faculty/select_timetable.html")
 
+
 @login_required
 def faculty_timetable_view(request, semester, division):
-    return render(request, "generator/class_timetable.html", {
-        "semester": semester,
-        "division": division
-    })
+    return render(
+        request,
+        "generator/class_timetable.html",
+        {"semester": semester, "division": division},
+    )
+
+
+# @login_required
+def get_overloaded_faculties_count():
+    constraint = Constraint.objects.first()
+    max_hours = constraint.max_daily_work_hours if constraint else 6
+
+    overloaded = (
+        TimetableEntry.objects.values("faculty", "day")
+        .annotate(total_lectures=Count("id"))
+        .filter(total_lectures__gt=max_hours)
+        .values("faculty")
+        .distinct()
+    )
+
+    return overloaded.count()
+
+
+@login_required
+def status_overview(request):
+    if request.user.role != "HOD":
+        return redirect("login")
+
+    rooms = RoomLab.objects.all()
+
+    context = {
+        "rooms": rooms,
+    }
+
+    return render(request, "generator/hod/status_overview.html", context)
+
+
+@login_required
+def faculty_work_hours(request):
+    if request.user.role != "HOD":
+        return redirect("login")
+
+    faculty_data = FacultyProfile.objects.select_related("user")
+
+    return render(
+        request,
+        "generator/hod/faculty_work_hours.html",
+        {"faculty_data": faculty_data},
+    )

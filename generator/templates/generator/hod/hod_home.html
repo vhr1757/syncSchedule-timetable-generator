@@ -1,58 +1,68 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>HOD Dashboard</title>
-  <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}">
-</head>
-<body>
+  <head>
+    <title>HOD Dashboard</title>
+    <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">Timetable Generator</div>
+      <div class="nav-right">
+        <span>HOD</span>
+        <a href="{% url 'login' %}"><button>Logout</button></a>
+      </div>
+    </nav>
 
-<nav class="navbar">
-  <div class="nav-left">Timetable Generator</div>
-  <div class="nav-right">
-    <span>HOD</span>
-    <a href="{% url 'login' %}"><button>Logout</button></a>
-  </div>
-</nav>
+    <section class="stats-bar">
+      <div class="stat-box">
+        <h3>{{ overloaded_count }}</h3>
+        <p>Overloaded Faculties</p>
+      </div>
+      <div class="stat-box">
+        <h3>3</h3>
+        <p>Room Conflicts</p>
+      </div>
+      <div class="stat-box">
+        <h3>240</h3>
+        <p>Total Weekly Hours</p>
+      </div>
+    </section>
 
-<section class="stats-bar">
-  <div class="stat-box"><h3>5</h3><p>Overloaded Faculties</p></div>
-  <div class="stat-box"><h3>3</h3><p>Room Conflicts</p></div>
-  <div class="stat-box"><h3>240</h3><p>Total Weekly Hours</p></div>
-</section>
+    <div class="container">
+      <h3 class="section-title">Department Control</h3>
 
-<div class="container">
-<h3 class="section-title">Department Control</h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4>Status Overview</h4>
+          <p>Rooms, faculties & batches status.</p>
+          <a href="{% url 'status_overview' %}"><button>View</button></a>
+        </div>
 
-<div class="card-grid">
-  <div class="card">
-    <h4>Status Overview</h4>
-    <p>Rooms, faculties & batches status.</p>
-    <button>View</button>
-  </div>
+        <div class="card">
+          <h4>Faculty Work Hours</h4>
+          <p>Analyze teaching workload.</p>
+          <button>Analyze</button>
+          {% comment %}
+          <a href="{% url 'faculty_work_hours' %}"></a> {%endcomment %}
+        </div>
 
-  <div class="card">
-    <h4>Faculty Work Hours</h4>
-    <p>Analyze teaching workload.</p>
-    <button>Analyze</button>
-  </div>
+        <div class="card">
+          <h4>Reports</h4>
+          <p>Download department reports.</p>
+          <button>Download</button>
+        </div>
 
-  <div class="card">
-    <h4>Reports</h4>
-    <p>Download department reports.</p>
-    <button>Download</button>
-  </div>
+        <div class="card">
+          <h4>Approve Timetable</h4>
+          <p>Approve or reject generated timetable.</p>
+          <button>Approve</button>
+        </div>
+      </div>
 
-  <div class="card">
-    <h4>Approve Timetable</h4>
-    <p>Approve or reject generated timetable.</p>
-    <button>Approve</button>
-  </div>
-</div>
-
-<div class="alert-box">
-  <strong>Alerts:</strong> Some faculties exceed weekly hour limits.
-</div>
-</div>
-</body>
+      <div class="alert-box">
+        <strong>Alerts:</strong> Some faculties exceed weekly hour limits.
+      </div>
+    </div>
+  </body>
 </html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Status Overview</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial;
+        background: #f4f6f8;
+      }
+      .navbar {
+        background: #4e73df;
+        color: white;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .nav-left {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .nav-right button {
+        background: white;
+        color: #4e73df;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .main-container {
+        padding: 30px;
+      }
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        background: #4e73df;
+        color: white;
+        padding: 10px;
+        text-align: left;
+      }
+      td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      tr:hover {
+        background: #f1f3ff;
+      }
+      .btn-secondary {
+        background: gray;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">HOD Panel</div>
+      <div class="nav-right">
+        <a href="{% url 'hod_home' %}"><button>Dashboard</button></a>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <h2>Status Overview</h2>
+
+      <!-- Rooms -->
+      <div class="card">
+        <h3>Rooms</h3>
+        <table>
+          <tr>
+            <th>Room No</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Status</th>
+          </tr>
+
+          {% for r in rooms %}
+          <tr>
+            <td>{{ r.roomNo }}</td>
+            <td>{{ r.room_type }}</td>
+            <td>{{ r.capacity }}</td>
+            <td>
+              {% if r.isAvailable %} Available {% else %} Occupied {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        <a href="{% url 'hod_home' %}">
+          <button class="btn-secondary">Back</button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
