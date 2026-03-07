@@ -67,21 +67,7 @@ class Timetable(models.Model):
 
     def __str__(self):
         return f"Semester {self.semester} Timetable"
-
-
-class TimetableEntry(models.Model):
-    timetable = models.ForeignKey(
-        Timetable, on_delete=models.CASCADE, related_name="entries"
-    )
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    faculty = models.ForeignKey(User, on_delete=models.CASCADE)
-    room_type = models.ForeignKey(RoomLab, on_delete=models.CASCADE)
-    day = models.CharField(max_length=10)
-    time_slot = models.CharField(max_length=20)
-
-    def __str__(self):
-        return f"{self.subject} - {self.day} {self.time_slot}"
-
+    
 
 class Constraint(models.Model):
     working_days = models.IntegerField(default=5)
@@ -101,15 +87,12 @@ class TimeSlot(models.Model):
         ("WED", "Wednesday"),
         ("THU", "Thursday"),
         ("FRI", "Friday"),
-        ("SAT", "Saturday"),
     ]
 
     day = models.CharField(max_length=3, choices=DAY_CHOICES)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
-
-    slot_number = models.IntegerField()
-    # Example: 1st slot of the day
+    start_time = models.TimeField(default="08:30")
+    end_time = models.TimeField(default="3:30")
+    is_break = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.day} {self.start_time}-{self.end_time}"

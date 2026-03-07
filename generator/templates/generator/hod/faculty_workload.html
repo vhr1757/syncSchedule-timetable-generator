@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Faculty Work Hours</title>
+    <title>Faculty Workload</title>
 
     <style>
       body {
@@ -9,6 +9,7 @@
         font-family: Arial;
         background: #f4f6f8;
       }
+
       .navbar {
         background: #4e73df;
         color: white;
@@ -17,10 +18,12 @@
         justify-content: space-between;
         align-items: center;
       }
+
       .nav-left {
         font-size: 20px;
         font-weight: 600;
       }
+
       .nav-right button {
         background: white;
         color: #4e73df;
@@ -29,32 +32,45 @@
         border-radius: 5px;
         cursor: pointer;
       }
+
       .main-container {
         padding: 30px;
       }
+
       .card {
         background: white;
         padding: 25px;
         border-radius: 8px;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
       }
+
       table {
         width: 100%;
         border-collapse: collapse;
       }
+
       th {
         background: #4e73df;
         color: white;
         padding: 10px;
         text-align: left;
       }
+
       td {
         padding: 10px;
         border-bottom: 1px solid #ddd;
       }
+
       tr:hover {
         background: #f1f3ff;
       }
+
+      .overload {
+        color: red;
+        font-weight: bold;
+      }
+
       .btn-secondary {
         background: gray;
         color: white;
@@ -69,26 +85,45 @@
   <body>
     <nav class="navbar">
       <div class="nav-left">HOD Panel</div>
+
       <div class="nav-right">
-        <a href="{% url 'hod_home' %}"><button>Dashboard</button></a>
+        <a href="{% url 'hod_home' %}">
+          <button>Dashboard</button>
+        </a>
       </div>
     </nav>
 
     <div class="main-container">
-      <h2>Faculty Work Hours</h2>
+      <h2>Faculty Workload Overview</h2>
 
       <div class="card">
         <table>
           <tr>
-            <th>Faculty Name</th>
-            <th>Total Assigned Hours</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Assigned Hours</th>
+            <th>Allowed Hours</th>
+            <th>Status</th>
           </tr>
 
           {% for f in faculty_data %}
+
           <tr>
-            <td>{{ f.faculty_username }}</td>
-            <td>{{ f.total_hours }}</td>
+            <td>{{f.name}}</td>
+
+            <td>{{f.email}}</td>
+
+            <td>{{f.assigned_hours}}</td>
+
+            <td>{{f.allowed_hours}}</td>
+
+            <td>
+              {% if f.assigned_hours > f.allowed_hours %}
+              <span class="overload">Overloaded</span>
+              {% else %} Normal {% endif %}
+            </td>
           </tr>
+
           {% endfor %}
         </table>
 

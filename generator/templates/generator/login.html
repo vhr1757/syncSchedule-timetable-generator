@@ -1,37 +1,53 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Login | Timetable Generator</title>
-  <link rel="stylesheet" href="{% static 'generator/login.css' %}" />
-</head>
-<body>
-  <div class="login-container">
-    <h2>Timetable Generator</h2>
-    <p class="subtitle">Login to continue</p>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login | Timetable Generator</title>
+    <link rel="stylesheet" href="{% static 'generator/login.css' %}" />
+    <script>
+      window.history.pushState(null, null, window.location.href);
+      window.onpopstate = function () {
+        window.history.go(1);
+      };
+    </script>
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Timetable Generator</h2>
+      <p class="subtitle">Login to continue</p>
 
-    <form method="post">
-      {% csrf_token %}
+      <form method="post">
+        {% csrf_token %}
 
-      <div class="input-group">
-        <label>Username</label>
-        <input type="text" name="username" placeholder="Enter username" required />
-      </div>
+        <div class="input-group">
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            required
+          />
+        </div>
 
-      <div class="input-group">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Enter password" required />
-      </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            required
+          />
+        </div>
 
-      <input class="login-btn" type="submit" value="Login" />
-    </form>
+        <input class="login-btn" type="submit" value="Login" />
+      </form>
 
-    {% if error %}
-      <p style="color:red; text-align:center;">{{ error }}</p>
-    {% endif %}
+      {% if error %}
+      <p style="color: red; text-align: center">{{ error }}</p>
+      {% endif %}
 
-    <p class="footer-text">© 2026 Timetable Generator System</p>
-  </div>
-</body>
+      <p class="footer-text">© 2026 Timetable Generator System</p>
+    </div>
+  </body>
 </html>

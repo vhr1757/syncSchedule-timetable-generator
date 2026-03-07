@@ -1,99 +1,179 @@
+{% load static %}
 <!doctype html>
 <html>
-  <head>
-    <title>Set Constraints</title>
-    <style>
-      body {
-        background: #f4f6f8;
-        font-family: Arial;
-        margin: 0;
-      }
-      .navbar {
-        background: #4e73df;
-        color: white;
-        padding: 15px 30px;
-      }
-      .container {
-        padding: 30px;
-      }
 
-      .card {
-        background: white;
-        padding: 25px;
-        border-radius: 8px;
-        max-width: 500px;
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-      }
+<head>
+  <title>Set Timetable Constraints</title>
 
-      .checkbox-row {
-        display: flex;
-        align-items: center; /* 🔥 This fixes vertical alignment */
-        gap: 8px; /* Space between checkbox and text */
-        margin-bottom: 6px;
-      }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
 
-      .checkbox-row input[type="checkbox"] {
-        width: auto; /* Prevents stretching */
-        margin: 0; /* Removes weird default margins */
-      }
+    .navbar {
+      background: #4e73df;
+      color: white;
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-      input {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-      }
-      button {
-        background: #4e73df;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-      }
-    </style>
-  </head>
+    .nav-left {
+      font-size: 20px;
+      font-weight: 600;
+    }
 
-  <body>
-    <div class="navbar">Set Timetable Constraints</div>
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
 
-    <div class="container">
-      <div class="card">
-        <form method="post">
-          {% csrf_token %}
+    .nav-right button {
+      background: white;
+      color: #4e73df;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-          <label>Max Lectures per Day</label>
-          <input
-            type="number"
-            name="max_lectures"
-            value="{{ constraint.max_lectures_per_day|default:6 }}"
-          />
+    .main-container {
+      padding: 30px;
+    }
 
-          <label>Max Labs per Day</label>
-          <input
-            type="number"
-            name="max_labs"
-            value="{{ constraint.max_labs_per_day|default:2 }}"
-          />
+    .page-title {
+      margin-bottom: 20px;
+    }
 
-          <label>
-            <div class="checkbox-row">
-            <input
-              type="checkbox"
-              name="allow_saturday"
-              {%
-              if
-              constraint.allow_saturday
-              %}checked{%
-              endif
-              %}
-            />
-            Allow Saturday
-            </div>
-          </label>
+    .form-card {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 500px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    }
 
-          <br /><br />
+    .form-group {
+      margin-bottom: 15px;
+    }
 
-          <button type="submit">Save & Generate</button>
-        </form>
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .btn-primary {
+      background: #4e73df;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: gray;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .success-msg {
+      color: green;
+      margin-top: 10px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-left">Admin Panel</div>
+
+  <div class="nav-right">
+    <a href="{% url 'admin_home' %}">
+      <button>Dashboard</button>
+    </a>
+
+    <a href="{% url 'login' %}">
+      <button>Logout</button>
+    </a>
+  </div>
+</nav>
+
+<div class="main-container">
+
+  <h2 class="page-title">Set Timetable Constraints</h2>
+
+  <div class="form-card">
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Working Days</label>
+        <input type="number" name="working_days"
+          value="{{ constraint.working_days|default:5 }}" required>
       </div>
-    </div>
-  </body>
+
+      <div class="form-group">
+        <label>Time Slots Per Day</label>
+        <input type="number" name="time_slots_per_day"
+          value="{{ constraint.time_slots_per_day|default:6 }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Max Lectures Per Day</label>
+        <input type="number" name="max_lectures_per_day"
+          value="{{ constraint.max_lectures_per_day|default:4 }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Max Hours Per Week (Faculty)</label>
+        <input type="number" name="max_hours_per_week"
+          value="{{ constraint.max_hours_per_week|default:20 }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Max Daily Work Hours (Faculty)</label>
+        <input type="number" name="max_daily_work_hours"
+          value="{{ constraint.max_daily_work_hours|default:6 }}" required>
+      </div>
+
+      <button type="submit" class="btn-primary">
+        Save Constraints
+      </button>
+
+    </form>
+
+    {% if success %}
+    <p class="success-msg">{{ success }}</p>
+    {% endif %}
+
+    <br>
+
+    <a href="{% url 'admin_home' %}">
+      <button class="btn-secondary">Back</button>
+    </a>
+
+  </div>
+
+</div>
+
+</body>
 </html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Generate Timetable</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f6f8;
+        margin: 0;
+      }
+
+      .navbar {
+        background: #4e73df;
+        color: white;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-left {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-right button {
+        background: white;
+        color: #4e73df;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .container {
+        width: 420px;
+        margin: 120px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 15px;
+        background: #4e73df;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .btn-secondary {
+        background: gray;
+      }
+
+      .message {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .success {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">Admin Panel</div>
+      <div class="nav-right">
+        <a href="{% url 'admin_home' %}">
+          <button>Dashboard</button>
+        </a>
+        <a href="{% url 'login' %}">
+          <button>Logout</button>
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="message {% if message.tags == 'success' %}success{% else %}error{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <h2>Generate Complete Timetable</h2>
+
+      <p>This will generate the timetable for <b>all semesters and divisions</b>.</p>
+
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Generate Timetable</button>
+      </form>
+
+      <a href="{% url 'admin_home' %}">
+        <button class="btn-secondary">Back</button>
+      </a>
+
+    </div>
+  </body>
+</html>

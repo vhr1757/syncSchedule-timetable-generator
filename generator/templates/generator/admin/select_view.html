@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Select Timetable</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f6f8;
+      }
+
+      .navbar {
+        background: #4e73df;
+        color: white;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav-left {
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .nav-right {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-right button {
+        background: white;
+        color: #4e73df;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .container {
+        width: 400px;
+        margin: 100px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+      }
+
+      select,
+      button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 15px;
+      }
+
+      button {
+        background: #4e73df;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-secondary {
+        background: gray;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">Admin Panel</div>
+      <div class="nav-right">
+        <a href="{% url 'admin_home' %}"><button>Dashboard</button></a>
+        <a href="{% url 'login' %}"><button>Logout</button></a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h2>Select Timetable</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <label>Semester</label>
+        <select name="semester">
+          {% for s in semesters %}
+          <option value="{{s}}">Semester {{s}}</option>
+          {% endfor %}
+        </select>
+
+        <br />
+        <br />
+
+        <label>Division</label>
+        <select name="division">
+          {% for d in divisions %}
+          <option value="{{d}}">{{d}}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit">View Timetable</button>
+      </form>
+      <a href="{% url 'admin_home' %}">
+        <button class="btn-secondary">Back</button>
+      </a>
+    </div>
+  </body>
+</html>

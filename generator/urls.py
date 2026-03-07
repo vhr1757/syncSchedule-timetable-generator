@@ -7,7 +7,14 @@ urlpatterns = [
     path("hod/", views.hod_home, name="hod_home"),
     path("hod/status-overview/", views.status_overview, name="status_overview"),
     path(
-        "hod/faculty-work-hours/", views.faculty_work_hours, name="faculty_work_hours"
+        "hod/faculty-workload/",
+        views.hod_faculty_workload,
+        name="hod_faculty_workload"
+    ),
+    path(
+        "hod/download-timetable-csv/",
+        views.download_timetable_csv,
+        name="download_timetable_csv",
     ),
     path("admin_hm", views.admin_home, name="admin_home"),
     path("admin_hm/manage-users/", views.manage_users, name="manage_users"),
@@ -42,16 +49,35 @@ urlpatterns = [
         name="delete_subject",
     ),
     path("admin_hm/add-room-lab/", views.add_room_lab, name="add_room_lab"),
-    path("admin_hm/generate/", views.set_constraints, name="set_constraints"),
-    path("admin_hm/run-generator/", views.run_generator, name="run_generator"),
     path(
-        "faculty/select-timetable/",
-        views.faculty_timetable_selector,
-        name="faculty_timetable_selector",
+        "admin_hm/set-constraints/",
+        views.set_constraints,
+        name="set_constraints"
     ),
     path(
-        "faculty/timetable/<int:semester>/<str:division>/",
-        views.faculty_timetable_view,
-        name="faculty_timetable_view",
+        "admin_hm/generate-timetable/",
+        views.generate_timetable_view,
+        name="generate_timetable"
+    ),
+    path(
+        "admin_hm/select-view/", 
+        views.select_view, 
+        name="select_view"
+    ),
+    path(
+        "admin_hm/view-timetable/", 
+        views.view_timetable, 
+        name="view_timetable"
+    ),
+    path(
+        "faculty/select-view/",
+        views.faculty_select_view,
+        name="faculty_select_view"
+    ),
+
+    path(
+        "faculty/view-timetable/",
+        views.faculty_view_timetable,
+        name="faculty_view_timetable"
     ),
 ]

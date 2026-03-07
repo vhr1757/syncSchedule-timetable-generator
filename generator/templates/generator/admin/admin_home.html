@@ -1,63 +1,102 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}">
-</head>
-<body>
-<nav class="navbar">
-  <div class="nav-left">Timetable Generator</div>
-  <div class="nav-right">
-    <span>Admin</span>
-    <a href="{% url 'login' %}"><button>Logout</button></a>
-  </div>
-</nav>
+  <head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'generator/dashboard.css' %}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-left">Timetable Generator</div>
+      <div class="nav-right">
+        <span>Admin</span>
+        <a href="{% url 'login' %}" onsubmit="logoutAllTabs()"><button>Logout</button></a>
+      </div>
+    </nav>
 
-<section class="stats-bar">
-  <div class="stat-box"><h3>{{ faculty_count }}</h3><p>Faculties</p></div>
-  <div class="stat-box"><h3>{{ room_count }}</h3><p>Rooms & Labs</p></div>
-  <div class="stat-box"><h3>8</h3><p>Batches</p></div>
-  <div class="stat-box"><h3>120</h3><p>Total Lectures</p></div>
-</section>
+    <section class="stats-bar">
+      <div class="stat-box">
+        <h3>{{ faculty_count }}</h3>
+        <p>Faculties</p>
+      </div>
+      <div class="stat-box">
+        <h3>{{ room_count }}</h3>
+        <p>Rooms & Labs</p>
+      </div>
+      <div class="stat-box">
+        <h3>8</h3>
+        <p>Batches</p>
+      </div>
+      <div class="stat-box">
+        <h3>120</h3>
+        <p>Total Lectures</p>
+      </div>
+    </section>
 
-<div class="container">
-<h3 class="section-title">Administration</h3>
+    <div class="container">
+      <h3 class="section-title">Administration</h3>
+      {% if messages %}
+      <div style="width: 80%; margin: 20px auto">
+        {% for message in messages %}
 
-<div class="card-grid">
-  <div class="card">
-    <h4>Faculty & Subjects</h4>
-    <p>Add, edit and assign faculty to subjects.</p>
-    <a href="{% url 'manage_users' %}"><button>Manage</button></a>
-  </div>
+        <div
+          style="
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: #d4edda;
+            color: #155724;
+            font-weight: bold;
+          "
+        >
+          {{ message }}
+        </div>
 
-  <div class="card">
-    <h4>Rooms & Labs</h4>
-    <p>Configure classrooms, labs and capacities.</p>
-    <a href="{% url 'add_room_lab' %}"><button>Configure</button></a>
-  </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div class="card-grid">
+        <div class="card">
+          <h4>Faculty & Subjects</h4>
+          <p>Add, edit and assign faculty to subjects.</p>
+          <a href="{% url 'manage_users' %}"><button>Manage</button></a>
+        </div>
 
-  <div class="card">
-    <h4>Scheduler</h4>
-    <p>Generate and validate timetables.</p>
-    <a href="{% url 'set_constraints' %}"><button>Generate</button></a>
-  </div>
+        <div class="card">
+          <h4>Rooms & Labs</h4>
+          <p>Configure classrooms, labs and capacities.</p>
+          <a href="{% url 'add_room_lab' %}"><button>Configure</button></a>
+        </div>
 
-  <div class="card">
-    <h4>View Timetable</h4>
-    <p>View final timetable in weekly format.</p>
-    <button>View</button>
-  </div>
-</div>
+        <div class="card">
+          <h4>Scheduler</h4>
+          <p>Generate and validate timetables.</p>
+          <a href="{% url 'set_constraints' %}"
+            ><button>Set Constraints</button></a
+          >
+          <a href="{% url 'generate_timetable' %}"
+            ><button>Generate Timetable</button></a
+          >
+        </div>
 
-<div class="activity">
-  <h4>Recent Activity</h4>
-  <ul>
-    <li>Timetable generated for CSE Sem 4</li>
-    <li>New lab added: DBMS Lab</li>
-    <li>Faculty workload updated</li>
-  </ul>
-</div>
-</div>
-</body>
+        <div class="card">
+          <h4>View Timetable</h4>
+          <p>View final timetable in weekly format.</p>
+          <a href="{% url 'select_view' %}">
+            <button>View Timetable</button>
+          </a>
+        </div>
+      </div>
+
+      <div class="activity">
+        <h4>Recent Activity</h4>
+        <ul>
+          <li>Timetable generated for CSE Sem 4</li>
+          <li>New lab added: DBMS Lab</li>
+          <li>Faculty workload updated</li>
+        </ul>
+      </div>
+    </div>
+  </body>
 </html>

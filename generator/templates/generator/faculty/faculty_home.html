@@ -41,7 +41,7 @@
       </div>
       <div class="stat-box">
         <h4>Semester Timetable</h4>
-        <a href="{% url 'faculty_timetable_selector' %}">
+        <a href="{% url 'faculty_select_view' %}">
           <button class="btn-primary">View</button>
         </a>
       </div>
@@ -57,7 +57,6 @@
           <li>10:45–11:45 DAA Theory</li>
           <li>11:45–12:45 Software Project</li>
         </ul>
-        <button class="btn-primary">Request Extra Class</button>
       </div>
 
       <br /><br />
@@ -66,61 +65,40 @@
         <table>
           <tr>
             <th>Time</th>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
+
+            {% for day in days %}
+            <th>{{day}}</th>
+            {% endfor %}
           </tr>
 
-          <tr>
-            <td>8:30–9:30</td>
-            <td>DDC (Sem4‑A1)</td>
-            <td>-</td>
-            <td>-</td>
-            <td>DDC (Sem4‑A2)</td>
-            <td>-</td>
-          </tr>
+          {% for row in rows %}
 
           <tr>
-            <td>9:30–10:30</td>
-            <td>-</td>
-            <td>-</td>
-            <td>DDC (Sem6‑B1)</td>
-            <td>-</td>
-            <td>-</td>
+            <td>{{row.slot.start_time}} - {{row.slot.end_time}}</td>
+
+            {% for entry in row.cells %}
+
+            <td>
+              {% if row.slot.is_break %}
+
+              <div class="break">BREAK</div>
+
+              {% elif entry %}
+
+              <div class="{% if entry.is_lab %}lab{% endif %}">
+                {{entry.subject.subject_name}}
+                <br />
+
+                (Sem{{entry.semester}}-{{entry.division}})
+              </div>
+
+              {% else %} - {% endif %}
+            </td>
+
+            {% endfor %}
           </tr>
 
-          <tr>
-            <td>10:30–12:30</td>
-            <td class="lab">DDC Lab (Sem4‑A1)</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td class="lab">DDC Lab (Sem6‑B2)</td>
-          </tr>
-
-          <tr>
-            <td colspan="6" class="break">BREAK</td>
-          </tr>
-
-          <tr>
-            <td>1:30–2:30</td>
-            <td>-</td>
-            <td>-</td>
-            <td>DDC (Sem4‑B1)</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-
-          <tr>
-            <td>2:30–3:30</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>DDC (Sem6‑A1)</td>
-            <td>-</td>
-          </tr>
+          {% endfor %}
         </table>
       </div>
     </div>

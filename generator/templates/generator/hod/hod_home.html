@@ -20,12 +20,12 @@
         <p>Overloaded Faculties</p>
       </div>
       <div class="stat-box">
-        <h3>3</h3>
+        <h3>{{ room_conflicts }}</h3>
         <p>Room Conflicts</p>
       </div>
       <div class="stat-box">
-        <h3>240</h3>
-        <p>Total Weekly Hours</p>
+        <h3>{{ total_hours }}</h3>
+        <p>Total Scheduled Classes</p>
       </div>
     </section>
 
@@ -42,21 +42,32 @@
         <div class="card">
           <h4>Faculty Work Hours</h4>
           <p>Analyze teaching workload.</p>
-          <button>Analyze</button>
-          {% comment %}
-          <a href="{% url 'faculty_work_hours' %}"></a> {%endcomment %}
+          <a href="{% url 'hod_faculty_workload' %}"><button>View</button></a>
         </div>
 
         <div class="card">
           <h4>Reports</h4>
           <p>Download department reports.</p>
-          <button>Download</button>
-        </div>
 
-        <div class="card">
-          <h4>Approve Timetable</h4>
-          <p>Approve or reject generated timetable.</p>
-          <button>Approve</button>
+          <form method="get">
+            <select name="semester">
+              {% for s in semesters %}
+              <option value="{{s}}">Sem {{s}}</option>
+              {% endfor %}
+            </select>
+
+            <select name="division">
+              {% for d in divisions %}
+              <option value="{{d}}">{{d}}</option>
+              {% endfor %}
+            </select>
+
+            <br /><br />
+
+            <button formaction="{% url 'download_timetable_csv' %}">
+              Download CSV
+            </button>
+          </form>
         </div>
       </div>
 

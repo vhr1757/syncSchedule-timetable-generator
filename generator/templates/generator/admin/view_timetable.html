@@ -1,0 +1,153 @@
+{% load static %}
+
+<!doctype html>
+<html>
+  <head>
+    <title>Generated Timetable</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial;
+        background: #f4f6f8;
+      }
+
+      .navbar {
+        background: #4e73df;
+        color: white;
+        padding: 14px 30px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .nav-right button {
+        background: white;
+        color: #4e73df;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .main-container {
+        padding: 30px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+      }
+
+      th {
+        background: #4e73df;
+        color: white;
+      }
+
+      .break {
+        background: #f8d7da;
+        font-weight: bold;
+      }
+
+      .subject {
+        font-weight: bold;
+      }
+
+      .faculty {
+        font-size: 12px;
+        color: #555;
+      }
+
+      .room {
+        font-size: 11px;
+        color: #777;
+      }
+
+      .lab {
+        background: #d1ecf1;
+        font-weight: 600;
+        color: black;
+        padding: 6px;
+        border-radius: 4px;
+      }
+
+      .btn-secondary {
+        background: gray;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div>Admin Panel</div>
+
+      <div class="nav-right">
+        <a href="{% url 'admin_home' %}">
+          <button>Dashboard</button>
+        </a>
+
+        <a href="{% url 'login' %}">
+          <button>Logout</button>
+        </a>
+      </div>
+    </nav>
+
+    <div class="main-container">
+      <h2>Semester {{semester}} Division {{division}} Timetable</h2>
+
+      <table>
+        <tr>
+          <th>Time</th>
+
+          {% for day in days %}
+          <th>{{day}}</th>
+          {% endfor %}
+        </tr>
+
+        {% for row in rows %}
+
+        <tr>
+          <td>{{row.slot.start_time}} - {{row.slot.end_time}}</td>
+
+          {% for entry in row.cells %}
+
+          <td>
+            {% if row.slot.is_break %}
+
+            <div class="break">BREAK</div>
+
+            {% elif entry %}
+
+            <div class="{% if entry.is_lab %}lab{% endif %}">
+              <div class="subject">{{entry.subject.subject_name}}</div>
+              <div class="faculty">{{entry.faculty.user.username}}</div>
+              <div class="room">{{entry.room.roomNo}}</div>
+            </div>
+
+            {% else %} - {% endif %}
+          </td>
+
+          {% endfor %}
+        </tr>
+
+        {% endfor %}
+      </table>
+
+      <a href="{% url 'select_view' %}">
+        <button class="btn-secondary">Back</button>
+      </a>
+    </div>
+  </body>
+</html>
