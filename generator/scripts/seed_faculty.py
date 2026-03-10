@@ -31,7 +31,7 @@ def create_faculty(username, email, department, subjects_list, workload):
     subjects = Subject.objects.filter(subject_name__in=subjects_list)
     profile.subjects.set(subjects)
 
-    print(f"✔ Created: {username}")
+    print(f"Created: {username}")
 
 
 faculty_data = [

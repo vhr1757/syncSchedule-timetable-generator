@@ -7,7 +7,7 @@
 
 body {
     height: 100vh;
-    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    background-color: #4e73df;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,4 +82,3 @@ body {
     font-size: 12px;
     color: #999;
 }
-

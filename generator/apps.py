@@ -11,7 +11,6 @@ class GeneratorConfig(AppConfig):
         def create_default_users(sender, **kwargs):
             User = get_user_model()
 
-            # Create Admin
             if not User.objects.filter(username='admin').exists():
                 User.objects.create_superuser(
                     username='admin',
@@ -20,7 +19,6 @@ class GeneratorConfig(AppConfig):
                     role='ADMIN'
                 )
 
-            # Create HOD
             if not User.objects.filter(username='hod').exists():
                 User.objects.create_user(
                     username='hod',

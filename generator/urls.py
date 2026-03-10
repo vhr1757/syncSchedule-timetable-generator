@@ -2,10 +2,26 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.login_view, name="login"),
-    path("faculty/", views.faculty_home, name="faculty_home"),
-    path("hod/", views.hod_home, name="hod_home"),
-    path("hod/status-overview/", views.status_overview, name="status_overview"),
+    path(
+        "", 
+        views.login_view,
+        name="login"
+    ),
+    path(
+        "faculty/",
+        views.faculty_home,
+        name="faculty_home"
+    ),
+    path(
+        "hod/",
+        views.hod_home,
+        name="hod_home"
+    ),
+    path(
+        "hod/status-overview/", 
+        views.status_overview, 
+        name="status_overview"
+    ),
     path(
         "hod/faculty-workload/",
         views.hod_faculty_workload,
@@ -16,39 +32,61 @@ urlpatterns = [
         views.download_timetable_csv,
         name="download_timetable_csv",
     ),
-    path("admin_hm", views.admin_home, name="admin_home"),
-    path("admin_hm/manage-users/", views.manage_users, name="manage_users"),
     path(
-        "admin_hm/manage-users/faculties/",
+        "admin_hm", 
+        views.admin_home, 
+        name="admin_home"
+    ),
+    path(
+        "admin_hm/manage-faculties-and-subjects/", 
+        views.manage_faculties_and_subjects, 
+        name="manage_faculties_and_subjects"
+    ),
+    path(
+        "admin_hm/manage-faculties/faculties/",
         views.manage_faculties,
         name="manage_faculties",
     ),
-    path("admin_hm/manage-users/add-faculty/", views.add_faculty, name="add_faculty"),
     path(
-        "admin_hm/manage-users/update-faculty/<int:faculty_id>/",
+        "admin_hm/manage-faculties/add-faculty/",
+        views.add_faculty,
+        name="add_faculty"
+    ),
+    path(
+        "admin_hm/manage-faculties/update-faculty/<int:faculty_id>/",
         views.update_faculty,
         name="update_faculty",
     ),
     path(
-        "admin_hm/manage-users/delete-faculty/<int:faculty_id>/",
+        "admin_hm/manage-faculties/delete-faculty/<int:faculty_id>/",
         views.delete_faculty,
         name="delete_faculty",
     ),
     path(
-        "admin_hm/manage-users/subjects/", views.manage_subjects, name="manage_subjects"
+        "admin_hm/manage-subjects/subjects/", 
+        views.manage_subjects, 
+        name="manage_subjects"
     ),
-    path("admin_hm/manage-users/add-subject/", views.add_subject, name="add_subject"),
     path(
-        "admin_hm/manage-users/update-subject/<int:subject_id>/",
+        "admin_hm/manage-subjects/add-subject/", 
+        views.add_subject, 
+        name="add_subject"
+    ),
+    path(
+        "admin_hm/manage-subjects/update-subject/<int:subject_id>/",
         views.update_subject,
         name="update_subject",
     ),
     path(
-        "admin_hm/manage-users/delete-subject/<int:subject_id>/",
+        "admin_hm/manage-subjects/delete-subject/<int:subject_id>/",
         views.delete_subject,
         name="delete_subject",
     ),
-    path("admin_hm/add-room-lab/", views.add_room_lab, name="add_room_lab"),
+    path(
+        "admin_hm/add-room-lab/", 
+        views.add_room_lab, 
+        name="add_room_lab"
+    ),
     path(
         "admin_hm/set-constraints/",
         views.set_constraints,

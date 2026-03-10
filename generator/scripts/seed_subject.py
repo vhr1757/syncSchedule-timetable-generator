@@ -1,14 +1,8 @@
-# ============================================
-# Django Standalone Subject Seeder
-# Run using: python generator/scripts/seed_subjects.py
-# ============================================
-
 import os
 import sys
 import django
 from pathlib import Path
 
-# 🔥 Load project root (2 levels up from scripts/)
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
@@ -99,6 +93,4 @@ for s in subjects:
     else:
         print(f"• Already exists: {s['name']}")
 
-print("\n====================================")
-print(f"✅ Subjects inserted successfully! ({created_count} new)")
-print("====================================")
+print(f"Subjects inserted successfully! ({created_count} new)")

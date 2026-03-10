@@ -35,7 +35,6 @@ def generate_all_timetables():
 
     slots = list(TimeSlot.objects.filter(is_break=False).order_by("day","start_time"))
 
-    # ---------------- FACULTY MAP ----------------
 
     faculty_map = defaultdict(list)
 
@@ -43,7 +42,6 @@ def generate_all_timetables():
         for s in f.subjects.all():
             faculty_map[s.id].append(f)
 
-    # ---------------- BUSY TRACKERS ----------------
 
     faculty_busy = defaultdict(set)
     room_busy = defaultdict(set)
@@ -52,9 +50,7 @@ def generate_all_timetables():
 
     created = 0
 
-    # =================================================
     # LAB SCHEDULING
-    # =================================================
 
     for semester in semesters:
         for division in divisions:
@@ -133,9 +129,7 @@ def generate_all_timetables():
                     subject.lab_hours -= 2
                     created += 2
 
-    # =================================================
     # LECTURE SCHEDULING
-    # =================================================
 
     slots_random = list(TimeSlot.objects.filter(is_break=False))
     random.shuffle(slots_random)

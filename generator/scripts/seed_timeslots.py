@@ -3,7 +3,6 @@ import sys
 import django
 from datetime import datetime, timedelta
 
-# Setup Django
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(BASE_DIR)
 
@@ -13,7 +12,6 @@ django.setup()
 from generator.models import TimeSlot
 
 
-# Clear old slots
 TimeSlot.objects.all().delete()
 
 

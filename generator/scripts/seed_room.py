@@ -50,4 +50,4 @@ for r in rooms:
         }
     )
 
-print("✅ Rooms, labs and capacities inserted successfully!")
+print("Rooms, labs and capacities inserted successfully!")

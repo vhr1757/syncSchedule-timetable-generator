@@ -27,7 +27,6 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            # Redirect based on role
             if user.role == "ADMIN":
                 return redirect("admin_home")
             elif user.role == "HOD":
@@ -59,6 +58,7 @@ def admin_home(request):
 
     faculty_count = User.objects.filter(role="FACULTY").count()
     room_count = RoomLab.objects.count()
+    total_lectures_labs = TimetableEntry.objects.count()
 
     return render(
         request,
@@ -66,15 +66,16 @@ def admin_home(request):
         {
             "faculty_count": faculty_count,
             "room_count": room_count,
+            "total_lectures_labs": total_lectures_labs,
         },
     )
 
 
 @login_required
-def manage_users(request):
+def manage_faculties_and_subjects(request):
     if request.user.role != "ADMIN":
         return redirect("login")
-    return render(request, "generator/admin/manage_users.html")
+    return render(request, "generator/admin/manage_faculty_subject.html")
 
 
 @login_required
@@ -166,7 +167,7 @@ def add_faculty(request):
             user=user, department=department, workload_hours=workload
         )
 
-        profile.subjects.set(selected_subjects)  # save relation
+        profile.subjects.set(selected_subjects) 
 
         return render(
             request,
@@ -560,8 +561,6 @@ def status_overview(request):
 
     return render(request, "generator/hod/status_overview.html", context)
 
-from django.db.models import Count
-
 def get_room_conflicts_count():
 
     conflicts = (
@@ -607,8 +606,6 @@ def hod_faculty_workload(request):
     )
 
 import csv
-from django.http import HttpResponse
-
 
 @login_required
 def download_timetable_csv(request):
